@@ -1,0 +1,24 @@
+CREATE DATABASE landmarks;
+CREATE TABLE country (
+                           id SERIAL PRIMARY KEY,
+                           name varchar,
+                           square real,
+                           population real,
+                           language varchar,
+                           description text
+);
+CREATE TABLE city (
+                        id SERIAL PRIMARY KEY,
+                        name varchar,
+                        country_id integer,
+                        population real,
+                        description text
+);
+
+CREATE TABLE landmark (
+                           id SERIAL PRIMARY KEY,
+                           name varchar,
+                           city_id integer,
+                           address varchar,
+                           description text
+)
