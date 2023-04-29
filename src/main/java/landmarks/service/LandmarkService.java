@@ -24,34 +24,27 @@ public class LandmarkService {
     private final CityRepository cityRepository;
 
     public LandmarkRs putLandmark (LandmarkRq landmarkRq){
-        LandmarkRs landmarkRs = new LandmarkRs();
-        List<Landmark> landmarkList = landmarkRepository.findAll();
-        if (landmarkList.isEmpty()){
             Landmark landmark = createLandmark(landmarkRq);
             landmarkRepository.save(landmark);
-            landmarkRs = createResponse(landmark);
-        }
-        else{
-            for (Landmark lm : landmarkList){
-                if (lm.equals(landmarkRq.getName())){
-                    landmarkRs.setDescription("Объект не создан, такая запись уже есть в базе");
-                    break;
-                }
-            }
-            if (!landmarkRs.getDescription().equals("Объект не создан, такая запись уже есть в базе")){
-                landmarkRepository.save(createLandmark(landmarkRq));
-                landmarkRs = createResponse(createLandmark(landmarkRq));
-            }
-        }
-
+            LandmarkRs landmarkRs = createResponse(landmark);
         return landmarkRs;
     }
 
     public LandmarkRs updateLandmark (int id, LandmarkRq landmarkRq){
         Landmark landmark = landmarkRepository.findById(id).get();
-        landmark.setName(landmarkRq.getName());
-        landmark.setCity(cityRepository.findById(landmarkRq.getCityId()).get());
-        landmark.setDescription(landmarkRq.getDescription());
+        if (landmarkRq.getName() != null){
+            landmark.setName(landmarkRq.getName());
+        }
+        if (landmarkRq.getAddress() != null){
+            landmark.setAddress(landmarkRq.getAddress());
+        }
+        if (landmarkRq.getCityId() != null){
+            landmark.setCity(cityRepository.findById(landmarkRq.getCityId()).get());
+        }
+        if (landmarkRq.getDescription() != null){
+            landmark.setDescription(landmarkRq.getDescription());
+        }
+
         landmarkRepository.save(landmark);
         return createResponse(landmark);
 
@@ -60,14 +53,8 @@ public class LandmarkService {
     public LandmarkRs deleteLandmark(int id){
         Landmark landmark = landmarkRepository.findById(id).get();
         LandmarkRs landmarkRs = new LandmarkRs();
-        if (landmark.equals(null)){
-            landmarkRs.setDescription("Запись с таким Id не найдена");
-        }
-        else {
-            landmarkRepository.deleteById(id);
-            System.out.println("запись с именем " + landmark.getName() + " удалена!!!");
-            landmarkRs.setDescription("Запись удалена");
-        }
+        landmarkRepository.delete(landmark);
+        landmarkRs.setDescription("Запись удалена");
         return landmarkRs;
     }
 
@@ -86,7 +73,7 @@ public class LandmarkService {
         return  landmarkRsList;
     }
 
-private LandmarkRs createResponse (Landmark landmark){
+    private LandmarkRs createResponse (Landmark landmark){
     LandmarkRs landmarkRs = new LandmarkRs();
     landmarkRs.setName(landmark.getName());
     landmarkRs.setAddress(landmark.getAddress());
@@ -95,10 +82,11 @@ private LandmarkRs createResponse (Landmark landmark){
     return landmarkRs;
 }
 
-private Landmark createLandmark(LandmarkRq landmarkRq){
+    private Landmark createLandmark(LandmarkRq landmarkRq){
     Landmark landmark = new Landmark();
     landmark.setName(landmarkRq.getName());
     landmark.setCity(cityRepository.findById(landmarkRq.getCityId()).get());
+    landmark.setAddress(landmarkRq.getAddress());
     landmark.setDescription(landmarkRq.getDescription());
     return landmark;
 }

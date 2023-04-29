@@ -15,13 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 public class CountryRs {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float square;
+    private Float square;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float population;
+    private Float population;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String language;
@@ -30,5 +31,5 @@ public class CountryRs {
     private String description;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<City> cityList;
+    private List<CityRs> cityRsList;
 }

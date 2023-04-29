@@ -40,7 +40,7 @@ public class CityResourceImpl implements CityResource{
     }
 
     @Override
-    public ResponseEntity<CityRs> createCity(CityRq cityRq) {
+    public ResponseEntity<CityRs> addCity(CityRq cityRq) {
         return ResponseEntity.ok(cityService.addCity(cityRq));
     }
 

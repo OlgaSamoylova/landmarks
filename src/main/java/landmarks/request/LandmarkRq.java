@@ -14,7 +14,7 @@ public class LandmarkRq {
 
     private String name;
 
-    private int cityId;
+    private Integer cityId;
 
     private String address;
 

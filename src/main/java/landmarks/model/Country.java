@@ -40,5 +40,4 @@ public class Country {
     @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
     private List<City> cityList;
 
-
 }

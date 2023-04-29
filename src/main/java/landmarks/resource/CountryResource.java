@@ -23,7 +23,7 @@ public interface CountryResource {
     ResponseEntity<CountryRs> deleteCountry(@PathVariable(name = "id") int id);
 
     @PostMapping("new")
-    ResponseEntity<CountryRs> createCountry(@RequestBody CountryRq countryRq);
+    ResponseEntity<CountryRs> addCountry(@RequestBody CountryRq countryRq);
 
     @PutMapping("{id}")
     ResponseEntity <CountryRs> updateCountry(@PathVariable(name = "id") int id, @RequestBody CountryRq countryRq);

@@ -1,9 +1,7 @@
 package landmarks.resource;
 
 import landmarks.request.CityRq;
-import landmarks.request.CountryRq;
 import landmarks.response.CityRs;
-import landmarks.response.CountryRs;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ public interface CityResource {
     ResponseEntity<CityRs> deleteCity(@PathVariable(name = "id") int id);
 
     @PostMapping("new")
-    ResponseEntity<CityRs> createCity(@RequestBody CityRq cityRq);
+    ResponseEntity<CityRs> addCity(@RequestBody CityRq cityRq);
 
     @PutMapping("{id}")
     ResponseEntity <CityRs> updateCity(@PathVariable(name = "id") int id, @RequestBody CityRq CityRq);

@@ -14,10 +14,10 @@ public class CityRq {
 
     private String name;
 
-    private int countryId;
+    private Integer countryId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float population;
+    private Float population;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;

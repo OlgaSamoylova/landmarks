@@ -26,7 +26,6 @@ public class City {
     private String name;
 
     @ManyToOne
-    //@Column (name = "country_id")
     private Country country;
 
     @Column

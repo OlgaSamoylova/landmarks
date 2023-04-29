@@ -18,14 +18,14 @@ public class CityRs {
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private int countryId;
+    private Integer countryId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float population;
+    private Float population;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String description;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<Landmark> landmarkList;
+    private List<LandmarkRs> landmarkRsList;
 }

@@ -11,13 +11,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CountryRq {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float square;
+    private Float square;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private float population;
+    private Float population;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String language;

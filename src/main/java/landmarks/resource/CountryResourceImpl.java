@@ -40,7 +40,7 @@ public class CountryResourceImpl implements CountryResource{
     }
 
     @Override
-    public ResponseEntity<CountryRs> createCountry(CountryRq countryRq) {
+    public ResponseEntity<CountryRs> addCountry(CountryRq countryRq) {
         return ResponseEntity.ok(countryService.addCountry(countryRq));
     }
 

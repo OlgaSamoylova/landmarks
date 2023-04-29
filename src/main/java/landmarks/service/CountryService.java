@@ -5,6 +5,7 @@ import landmarks.model.Country;
 import landmarks.repository.CityRepository;
 import landmarks.repository.CountryRepository;
 import landmarks.request.CountryRq;
+import landmarks.response.CityRs;
 import landmarks.response.CountryRs;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,26 +26,9 @@ public class CountryService {
     private final CityRepository cityRepository;
 
     public CountryRs addCountry(CountryRq countryRq){
-        CountryRs countryRs = new CountryRs();
         Country country = createCountry(countryRq);
-        List<Country> countryList = countryRepository.findAll();
-        if (countryList.isEmpty()){
-            countryRepository.save(country);
-            countryRs = createCountryResponse(country);
-        }
-        else{
-            for (Country c : countryList){
-                if(c.getName().equals(country.getName())){
-                    countryRs.setDescription("Такая страна уже есть в справочнике");
-                    break;
-                }
-            }
-            if (!countryRs.getDescription().equals("Такая страна уже есть в справочнике")){
-                countryRepository.save(country);
-                countryRs = createCountryResponse(country);
-            }
-        }
-
+        countryRepository.save(country);
+        CountryRs countryRs = createCountryResponse(country);
         return countryRs;
     }
 
@@ -55,18 +39,29 @@ public class CountryService {
             countryRs.setDescription("Запись с таким Id не найдена");
         }
         else {
-            countryRepository.deleteById(id);
+            countryRepository.delete(country);
             countryRs.setDescription("Запись удалена");
         }
         return countryRs;
     }
 
     public CountryRs updateCountry(int id, CountryRq countryRq){
-        Country country = countryRepository.findById(id).orElseThrow();
-        country.setName(countryRq.getName());
-        country.setSquare(countryRq.getSquare());
-        country.setPopulation(countryRq.getPopulation());
-        country.setDescription(countryRq.getDescription());
+        Country country = countryRepository.findById(id).get();
+        if (countryRq.getName() != null){
+            country.setName(countryRq.getName());
+        }
+        if (countryRq.getSquare() != null){
+            country.setSquare(countryRq.getSquare());
+        }
+        if (countryRq.getPopulation() != null){
+            country.setPopulation(countryRq.getPopulation());
+        }
+        if (countryRq.getDescription() != null){
+            country.setDescription(countryRq.getDescription());
+        }
+        if (countryRq.getLanguage() != null){
+            country.setLanguage(countryRq.getLanguage());
+        }
         countryRepository.save(country);
 
         return createCountryResponse(country);
@@ -83,15 +78,24 @@ public class CountryService {
     }
 
     public CountryRs getCountry(int id){
-        Country country = countryRepository.findById(id).orElseThrow();
+        Country country = countryRepository.findById(id).get();
         return createCountryResponse(country);
     }
 
     public CountryRs getCountryCities(int id){
-        CountryRs countryRs = new CountryRs();
-        Country country = countryRepository.findById(id).orElseThrow();
+        Country country = countryRepository.findById(id).get();
         List<City> cityList = country.getCityList();
-        countryRs.setCityList(cityList);
+        List<CityRs> cityRsList = new ArrayList<>();
+        for (City city: cityList){
+            CityRs cityRs = new CityRs();
+            cityRs.setName(city.getName());
+            cityRs.setDescription(city.getDescription());
+            cityRs.setPopulation(city.getPopulation());
+            cityRs.setCountryId(city.getCountry().getId());
+            cityRsList.add(cityRs);
+        }
+        CountryRs countryRs = createCountryResponse(country);
+        countryRs.setCityRsList(cityRsList);
         return countryRs;
     }
 
@@ -99,6 +103,7 @@ public class CountryService {
         Country country = new Country();
         country.setName(countryRq.getName());
         country.setSquare(countryRq.getSquare());
+        country.setLanguage(countryRq.getLanguage());
         country.setPopulation(countryRq.getPopulation());
         country.setDescription(countryRq.getDescription());
         return country;
